@@ -1,0 +1,17 @@
+<div class="title-container">
+  <div class="title-wrapper">
+    <h2 class="section-title" [class.animate]="animate">
+      Categorii
+      <span class="underline"></span>
+    </h2>
+
+  </div>
+</div>
+
+<ul>
+  <li *ngFor="let category of categories" (click)="navigateTo(category)">
+    <img [src]="'assets/' + category + '.png'" alt="{{ category }}" />
+    {{ category }}
+  </li>
+</ul>
+

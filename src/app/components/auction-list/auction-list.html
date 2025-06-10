@@ -1,0 +1,19 @@
+<div class="title-container">
+  <div class="title-wrapper">
+    <h2 class="section-title" [class.animate]="animate">
+      Licitații {{ categoryName }}
+      <span class="underline"></span>
+    </h2>
+  </div>
+</div>
+
+
+<button (click)="goBack()" class="back-button">← Categorii</button>
+
+<div *ngFor="let auction of auctions" class="auction-card">
+  <h3>{{ auction.title }}</h3>
+  <p>{{ auction.description }}</p>
+  <strong>Preț de pornire: {{ auction.price }} RON</strong>
+
+</div>
+

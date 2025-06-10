@@ -1,0 +1,8 @@
+.site-link {
+  color: white;
+  text-decoration: none;
+}
+
+.site-link:hover {
+  text-decoration: underline;
+}
