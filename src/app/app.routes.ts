@@ -14,5 +14,18 @@ export const routes: Routes = [
     path: 'signin',
     loadComponent: () =>
       import('./components/signin/signin').then(m => m.SigninComponent)
+  },
+  {
+    path: 'create-auction',
+    loadComponent: () =>
+      import('./components/create-auction/create-auction').then(m => m.CreateAuctionComponent)
+  },
+  {
+    path: 'create-category',
+    loadComponent: () => import('./components/create-category/create-category')
+      .then(m => m.CreateCategoryComponent)
   }
+
+
+
 ];

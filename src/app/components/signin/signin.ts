@@ -1,11 +1,12 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { RouterModule } from '@angular/router'; // <- ADĂUGAT
 
 @Component({
-  selector: 'app-signin',
   standalone: true,
-  imports: [CommonModule],
+  selector: 'app-signin',
   templateUrl: './signin.html',
-  styleUrls: ['./signin.css']
+  styleUrls: ['./signin.css'],
+  imports: [CommonModule, RouterModule] // <- ADĂUGAT
 })
 export class SigninComponent {}

@@ -10,7 +10,7 @@ import { Router } from '@angular/router';
   imports: [CommonModule]
 })
 export class CategoryListComponent implements OnInit {
-  categories: string[] = ['Autovehicule', 'Electronice', 'Ornamental', 'Imbracaminte'];
+  categories: string[] = ['Vehicles', 'Electronics', 'Decorative', 'Clothing'];
 
   animate: boolean = false; // 🔹 AICI declari variabila
 

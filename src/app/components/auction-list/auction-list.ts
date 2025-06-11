@@ -25,28 +25,28 @@ export class AuctionListComponent implements OnInit {
     }, 0);
 
     switch (this.categoryName) {
-      case 'Autovehicule':
+      case 'Vehicles':
         this.auctions = [
           { title: 'BMW Seria 3', description: 'Diesel, an 2018, 150.000 km', price: 53000 },
           { title: 'Volkswagen Golf', description: 'Benzină, 2016, 120.000 km', price: 37000 }
         ];
         break;
 
-      case 'Electronice':
+      case 'Electronics':
         this.auctions = [
           { title: 'iPhone 13', description: '128GB, Midnight', price: 3600 },
           { title: 'Laptop Lenovo', description: 'ThinkPad, 16GB RAM', price: 3200 }
         ];
         break;
 
-      case 'Ornamental':
+      case 'Decorative':
         this.auctions = [
           { title: 'Tablou pictură în ulei', description: 'Semnat de artist român', price: 800 },
           { title: 'Vază ceramică handmade', description: 'Pictată manual', price: 300 }
         ];
         break;
 
-      case 'Imbracaminte':
+      case 'Clothing':
         this.auctions = [
           { title: 'Geacă Nike', description: 'mărimea M, ca nouă', price: 450 },
           { title: 'Rochie Zara', description: 'colecție 2024', price: 250 }
