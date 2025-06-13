@@ -5,7 +5,12 @@
     </h1>
 
     <div class="search-container">
-      <input type="text" class="search-bar" placeholder="Search for Auctions..." />
+      <input
+        type="text"
+        [(ngModel)]="searchTerm"
+        (keyup.enter)="search()"
+        class="search-bar"
+        placeholder="Search for Auctions..." />
     </div>
 
     <div class="auth-buttons">

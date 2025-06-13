@@ -24,6 +24,12 @@ export const routes: Routes = [
     path: 'create-category',
     loadComponent: () => import('./components/create-category/create-category')
       .then(m => m.CreateCategoryComponent)
+  },
+  {
+    path: 'search',
+    loadComponent: () =>
+      import('./components/search-auction/search-auction')
+        .then(m => m.SearchAuctionComponent)
   }
 
 

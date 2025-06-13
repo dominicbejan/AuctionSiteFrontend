@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
+import { CategoryService } from '../../services/category.service';
 
 @Component({
   standalone: true,
@@ -10,28 +11,26 @@ import { Router } from '@angular/router';
   imports: [CommonModule]
 })
 export class CategoryListComponent implements OnInit {
-  // 1. Numele afișate în UI (pentru utilizator)
-  categories: string[] = ['Autovehicule', 'Electronice', 'Decorative', 'Îmbrăcăminte'];
+  categories: any[] = [];
   animate: boolean = false;
 
-  // 2. Mapare între UI și backend
-  categoryMap: Record<string, string> = {
-    'Vehicles': 'autovehicule',
-    'Electronics': 'electronice',
-    'Decorative': 'decorative',
-    'Clothing': 'îmbrăcăminte'
-  };
-
-  constructor(private router: Router) {}
+  constructor(private router: Router, private categoryService: CategoryService) {}
 
   ngOnInit(): void {
-    setTimeout(() => {
-      this.animate = true;
-    }, 50);
+    setTimeout(() => this.animate = true, 50);
+
+    this.categoryService.getAllCategories().subscribe({
+      next: (data) => {
+        console.log('✅ CATEGORII:', data);
+        this.categories = data;
+      },
+      error: (err) => {
+        console.error('❌ Eroare la preluarea categoriilor:', err);
+      }
+    });
   }
 
-  navigateTo(categoryDisplayName: string): void {
-    const backendCategory = this.categoryMap[categoryDisplayName] || categoryDisplayName;
-    this.router.navigate(['/category', backendCategory]);
+  navigateTo(categoryName: string): void {
+    this.router.navigate(['/category', categoryName]);
   }
 }

@@ -4,14 +4,13 @@
       Categories
       <span class="underline"></span>
     </h2>
-
   </div>
 </div>
 
 <ul>
-  <li *ngFor="let category of categories" (click)="navigateTo(category)">
-    <img [src]="'assets/' + category + '.png'" alt="{{ category }}" />
-    {{ category }}
+  <li *ngFor="let category of categories" (click)="navigateTo(category.name)">
+    <img [src]="'assets/' + category.name.toLowerCase() + '.png'" alt="{{ category.name }}" />
+    {{ category.name }}
   </li>
 </ul>
 

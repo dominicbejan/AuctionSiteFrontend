@@ -2,11 +2,18 @@
   <h2 class="signin-title">Register</h2>
   <p class="signin-subtitle">Create your account</p>
 
-  <form class="signin-form">
-    <input type="text" placeholder="Full Name" required />
-    <input type="text" placeholder="Username" required />
-    <input type="email" placeholder="Email" required />
-    <input type="password" placeholder="Password" required />
+  <form class="signin-form" (ngSubmit)="register()">
+    <input type="text" placeholder="Username" [(ngModel)]="user.accountName" name="accountName" required />
+    <input type="email" placeholder="Email" [(ngModel)]="user.email" name="email" required />
+    <input type="password" placeholder="Password" [(ngModel)]="user.password" name="password" required />
+    <input type="text" placeholder="Province" [(ngModel)]="user.province" name="province" required />
+    <input type="text" placeholder="City" [(ngModel)]="user.city" name="city" required />
+    <input type="text" placeholder="Address" [(ngModel)]="user.address" name="address" required />
+
+    <select [(ngModel)]="user.type" name="type" required>
+      <option value="Normal">Normal</option>
+      <option value="Premium">Premium</option>
+    </select>
 
     <button type="submit">Register</button>
   </form>

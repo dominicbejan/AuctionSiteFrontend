@@ -13,4 +13,8 @@ export class AuctionService {
   getAuctionsByCategory(categoryName: string): Observable<any[]> {
     return this.http.get<any[]>(`http://localhost:9090/categories/${categoryName}/auctions`);
   }
+
+  searchAuctionsByName(name: string): Observable<any[]> {
+    return this.http.get<any[]>(`http://localhost:9090/auctions/search?name=${name}`);
+  }
 }
