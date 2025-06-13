@@ -10,20 +10,28 @@ import { Router } from '@angular/router';
   imports: [CommonModule]
 })
 export class CategoryListComponent implements OnInit {
-  categories: string[] = ['Vehicles', 'Electronics', 'Decorative', 'Clothing'];
+  // 1. Numele afișate în UI (pentru utilizator)
+  categories: string[] = ['Autovehicule', 'Electronice', 'Decorative', 'Îmbrăcăminte'];
+  animate: boolean = false;
 
-  animate: boolean = false; // 🔹 AICI declari variabila
+  // 2. Mapare între UI și backend
+  categoryMap: Record<string, string> = {
+    'Vehicles': 'autovehicule',
+    'Electronics': 'electronice',
+    'Decorative': 'decorative',
+    'Clothing': 'îmbrăcăminte'
+  };
 
   constructor(private router: Router) {}
 
   ngOnInit(): void {
-    // declanșează animația după ce DOM-ul este încărcat
     setTimeout(() => {
       this.animate = true;
     }, 50);
   }
 
-  navigateTo(category: string): void {
-    this.router.navigate(['/category', category]);
+  navigateTo(categoryDisplayName: string): void {
+    const backendCategory = this.categoryMap[categoryDisplayName] || categoryDisplayName;
+    this.router.navigate(['/category', backendCategory]);
   }
 }

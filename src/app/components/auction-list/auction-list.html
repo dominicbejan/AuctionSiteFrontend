@@ -11,9 +11,8 @@
 <button (click)="goBack()" class="back-button">← Categorii</button>
 
 <div *ngFor="let auction of auctions" class="auction-card">
-  <h3>{{ auction.title }}</h3>
+  <h3>{{ auction.name }}</h3>
   <p>{{ auction.description }}</p>
-  <strong>Preț de pornire: {{ auction.price }} RON</strong>
-
+  <p><strong>Preț de pornire:</strong> {{ auction.bitNowPrice }} RON</p>
 </div>
 
