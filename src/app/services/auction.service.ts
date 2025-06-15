@@ -17,4 +17,12 @@ export class AuctionService {
   searchAuctionsByName(name: string): Observable<any[]> {
     return this.http.get<any[]>(`http://localhost:9090/auctions/search?name=${name}`);
   }
+
+  createAuction(payload: any, userName: string): Observable<any> {
+    return this.http.post(`http://localhost:9090/auctions/${userName}`, payload);
+  }
+
+  getAuctionsByUser(accountName: string): Observable<any[]> {
+    return this.http.get<any[]>(`${this.apiUrl}/users/${accountName}/auctions`);
+  }
 }

@@ -1,0 +1,13 @@
+<div class="my-auctions-container">
+  <h2>Licitațiile tale</h2>
+
+  <div *ngIf="auctions.length === 0">
+    Nu ai încă nicio licitație.
+  </div>
+
+  <div *ngFor="let auction of auctions" class="auction-card">
+    <h3>{{ auction.name }}</h3>
+    <p>{{ auction.description }}</p>
+    <strong>Preț: {{ auction.bitNowPrice }} RON</strong>
+  </div>
+</div>

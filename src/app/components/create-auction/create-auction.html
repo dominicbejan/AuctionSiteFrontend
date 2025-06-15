@@ -1,0 +1,44 @@
+<div class="create-auction-container">
+    <h2>Crează o nouă licitație</h2>
+
+    <div *ngIf="errorMessage" class="error-message">{{ errorMessage }}</div>
+
+    <form (ngSubmit)="createAuction()">
+        <div class="form-group">
+            <label>Nume licitație:</label>
+            <input [(ngModel)]="auction.name" name="name" required />
+        </div>
+
+        <div class="form-group">
+            <label>Descriere:</label>
+            <textarea [(ngModel)]="auction.description" name="description" required></textarea>
+        </div>
+
+        <div class="form-group">
+            <label>Preț licitație inițial:</label>
+            <input type="number" [(ngModel)]="auction.bitNowPrice" name="bitNowPrice" required />
+        </div>
+
+        <div class="form-group">
+            <label>Preț „cumpără acum”:</label>
+            <input type="number" [(ngModel)]="auction.buyNowPrice" name="buyNowPrice" />
+        </div>
+
+        <div class="form-group">
+            <label>Data începerii:</label>
+            <input type="date" [(ngModel)]="auction.startBiddingDate" name="startDate" required />
+        </div>
+
+        <div class="form-group">
+            <label>Data încheierii:</label>
+            <input type="date" [(ngModel)]="auction.endBiddingDate" name="endDate" required />
+        </div>
+
+        <div class="form-group">
+            <label>Categorie:</label>
+            <input [(ngModel)]="categoryName" name="categoryName" required />
+        </div>
+
+        <button type="submit" class="submit-button">Creează</button>
+    </form>
+</div>

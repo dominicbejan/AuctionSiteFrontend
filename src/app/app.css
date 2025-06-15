@@ -6,3 +6,9 @@
 .site-link:hover {
   text-decoration: underline;
 }
+
+.left-buttons {
+  position: absolute;
+  left: 20px;
+  top: 20px;
+}

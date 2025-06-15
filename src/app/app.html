@@ -13,10 +13,23 @@
         placeholder="Search for Auctions..." />
     </div>
 
-    <div class="auth-buttons">
+    <div class="auth-buttons" *ngIf="isLoggedIn | async; else guest">
+      <a routerLink="/create-auction" class="auth-link">Create Auction</a>
+
+      <!-- ✅ butonul pentru admin -->
+      <a *ngIf="isAdmin" routerLink="/create-category" class="auth-link">Create Category</a>
+
+      <a (click)="logout()" class="auth-link" style="cursor: pointer">Sign out</a>
+    </div>
+
+    <div class="left-buttons" *ngIf="isLoggedIn | async">
+      <a routerLink="/my-auctions" class="auth-link">My Auctions</a>
+    </div>
+
+    <ng-template #guest>
       <a routerLink="/login" class="auth-link">Log in</a>
       <a routerLink="/signin" class="auth-link">Sign in</a>
-    </div>
+    </ng-template>
   </div>
 </header>
 <router-outlet></router-outlet>

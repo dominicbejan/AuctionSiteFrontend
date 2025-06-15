@@ -23,6 +23,13 @@ export class LoginComponent {
     this.authService.login(this.username, this.password).subscribe({
       next: (res) => {
         console.log("✅ Login OK:", res);
+        localStorage.setItem('accountName', this.username);
+        localStorage.setItem('role', 'admin'); // dacă utilizatorul e admin
+        if (this.username === 'admin') {
+          localStorage.setItem('role', 'admin');
+        } else {
+          localStorage.setItem('role', 'user');
+        }
         alert('Login reușit!');
         this.router.navigate(['/']);
       },

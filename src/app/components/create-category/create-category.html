@@ -1,0 +1,16 @@
+<div class="create-category-container">
+  <h2>Crează o categorie nouă</h2>
+
+  <form (ngSubmit)="createCategory()">
+    <label>Nume categorie:</label>
+    <input type="text" [(ngModel)]="name" name="name" required />
+
+    <label>Descriere:</label>
+    <textarea [(ngModel)]="description" name="description" required></textarea>
+
+    <button type="submit">Creează</button>
+  </form>
+
+  <p *ngIf="successMessage" class="success">{{ successMessage }}</p>
+  <p *ngIf="errorMessage" class="error">{{ errorMessage }}</p>
+</div>

@@ -1,12 +1,17 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { Observable, BehaviorSubject } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
   private baseUrl = 'http://localhost:9090';
+
+  private isLoggedInSubject = new BehaviorSubject<boolean>(false);
+  public isLoggedIn$ = this.isLoggedInSubject.asObservable();
+
+  private currentUser: string | null = null;
 
   constructor(private http: HttpClient) {}
 
@@ -16,10 +21,39 @@ export class AuthService {
       'Content-Type': 'application/json'
     });
 
-    return this.http.get(`${this.baseUrl}/users/login-test`, {
-      headers,
-      responseType: 'text' as 'json', // 🔥 important
-      withCredentials: true
+    return new Observable(observer => {
+      this.http.get(`${this.baseUrl}/users/login-test`, {
+        headers,
+        responseType: 'text' as 'json',
+        withCredentials: true
+      }).subscribe({
+        next: (response) => {
+          this.isLoggedInSubject.next(true);
+          this.currentUser = accountName;
+          localStorage.setItem('accountName', accountName);
+          observer.next(response);
+          observer.complete();
+        },
+        error: (err) => {
+          this.isLoggedInSubject.next(false);
+          this.currentUser = null;
+          observer.error(err);
+        }
+      });
     });
+  }
+
+  logout(): void {
+    this.isLoggedInSubject.next(false);
+    this.currentUser = null;
+    localStorage.removeItem('accountName');
+  }
+
+  isAuthenticated(): boolean {
+    return this.isLoggedInSubject.value;
+  }
+
+  getCurrentUser(): string | null {
+    return this.currentUser;
   }
 }

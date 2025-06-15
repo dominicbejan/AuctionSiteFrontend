@@ -30,8 +30,13 @@ export const routes: Routes = [
     loadComponent: () =>
       import('./components/search-auction/search-auction')
         .then(m => m.SearchAuctionComponent)
+  },
+
+  {
+    path: 'my-auctions',
+    loadComponent: () =>
+      import('./components/my-auctions/my-auctions')
+        .then(m => m.MyAuctionsComponent)
   }
-
-
 
 ];

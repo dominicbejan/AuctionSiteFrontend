@@ -1,13 +1,41 @@
 import { Component } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { CategoryService } from '../../services/category.service';
+import { Router } from '@angular/router';
+import {FormsModule} from '@angular/forms';
 
 @Component({
   selector: 'app-create-category',
-  standalone: true,
-  imports: [CommonModule],
-  template: `
-    <h2>Creare categorie</h2>
-    <p>Formularul de creare va fi aici.</p>
-  `
+  templateUrl: './create-category.html',
+  imports: [
+    FormsModule
+  ],
+  styleUrls: ['./create-category.css']
 })
-export class CreateCategoryComponent {}
+export class CreateCategoryComponent {
+  name = '';
+  description = '';
+  errorMessage = '';
+  successMessage = '';
+
+  constructor(private categoryService: CategoryService, private router: Router) {}
+
+  createCategory() {
+    this.errorMessage = '';
+    this.successMessage = '';
+
+    this.categoryService.createCategory({
+      name: this.name,
+      description: this.description
+    }).subscribe({
+      next: () => {
+        this.successMessage = 'Categoria a fost creată cu succes!';
+        this.name = '';
+        this.description = '';
+      },
+      error: (err) => {
+        console.error(err);
+        this.errorMessage = 'A apărut o eroare la creare.';
+      }
+    });
+  }
+}

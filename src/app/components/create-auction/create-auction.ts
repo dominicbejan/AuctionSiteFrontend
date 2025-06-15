@@ -1,123 +1,57 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { HttpClient } from '@angular/common/http';
+import { AuctionService } from '../../services/auction.service';
 import { Router } from '@angular/router';
 
 @Component({
   standalone: true,
   selector: 'app-create-auction',
   imports: [CommonModule, FormsModule],
-  template: `
-    <div class="form-container">
-      <h2>Creare Licitație</h2>
-
-      <form (ngSubmit)="submitAuction()">
-        <label>Titlu:</label>
-        <input [(ngModel)]="auction.name" name="name" required />
-
-        <label>Descriere:</label>
-        <textarea [(ngModel)]="auction.description" name="description" required></textarea>
-
-        <label>Preț inițial:</label>
-        <input type="number" [(ngModel)]="auction.bitNowPrice" name="bitNowPrice" required />
-
-        <label>Preț Buy Now:</label>
-        <input type="number" [(ngModel)]="auction.buyNowPrice" name="buyNowPrice" />
-
-        <label>Data de start:</label>
-        <input type="text" [(ngModel)]="auction.startBiddingDate" name="startBiddingDate" placeholder="ex: 2025-06-13" required />
-
-        <label>Data de sfârșit:</label>
-        <input type="text" [(ngModel)]="auction.endBiddingDate" name="endBiddingDate" placeholder="ex: 2025-06-20" required />
-
-        <label>Promovat? (YES/NO):</label>
-        <input [(ngModel)]="auction.promoted" name="promoted" required />
-
-        <label>Categorie:</label>
-        <input [(ngModel)]="categoryName" name="categoryName" required />
-
-        <button type="submit">Creează licitația</button>
-      </form>
-
-      <p *ngIf="successMessage">{{ successMessage }}</p>
-      <p *ngIf="errorMessage" style="color: red;">{{ errorMessage }}</p>
-    </div>
-  `,
-  styles: [`
-    .form-container {
-      max-width: 500px;
-      margin: 30px auto;
-      background-color: #f9f9fb;
-      padding: 30px;
-      border-radius: 10px;
-      box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-    }
-
-    form {
-      display: flex;
-      flex-direction: column;
-      gap: 15px;
-    }
-
-    input, textarea {
-      padding: 10px;
-      font-size: 1rem;
-      border: 1px solid #ccc;
-      border-radius: 6px;
-    }
-
-    button {
-      background-color: #007bff;
-      color: white;
-      font-weight: bold;
-      border: none;
-      padding: 12px;
-      border-radius: 6px;
-      cursor: pointer;
-    }
-
-    button:hover {
-      background-color: #0056b3;
-    }
-  `]
+  templateUrl: './create-auction.html',
+  styleUrls: ['./create-auction.css']
 })
 export class CreateAuctionComponent {
   auction = {
     name: '',
     description: '',
-    promoted: '',
     bitNowPrice: 0,
     buyNowPrice: 0,
+    promoted: 'NO',
     startBiddingDate: '',
-    endBiddingDate: '',
-    numbersOfViews: 0
+    endBiddingDate: ''
   };
 
   categoryName = '';
-  successMessage = '';
+  userName = ''; // poți lua asta din localStorage dacă ai salvat userul după login
   errorMessage = '';
 
-  constructor(private http: HttpClient, private router: Router) {}
+  constructor(private auctionService: AuctionService, private router: Router) {
+    this.userName = localStorage.getItem('accountName') || ''; // sau alt mecanism
+    console.log('accountName în localStorage:', localStorage.getItem('accountName'));
+  }
 
-  submitAuction() {
-    const username = 'admin'; // sau ia-l din login mai târziu
-    const url = `http://localhost:9090/auctions/${username}`;
-    const body = {
+  createAuction() {
+    this.errorMessage = ''; // resetăm eventualul mesaj anterior
+
+    const payload = {
       auction: this.auction,
       categoryName: this.categoryName
     };
 
-    this.http.post(url, body).subscribe({
+    this.auctionService.createAuction(payload, this.userName).subscribe({
       next: () => {
-        this.successMessage = 'Licitația a fost creată cu succes!';
-        this.errorMessage = '';
-        setTimeout(() => this.router.navigate(['/']), 1500);
+        alert('Licitația a fost creată cu succes!');
+        this.router.navigate(['/']);
       },
       error: (err) => {
-        console.error(err);
-        this.errorMessage = 'A apărut o eroare la creare.';
-        this.successMessage = '';
+        console.error('Eroare:', err);
+
+        if (err.status === 404 || err.status === 400) {
+          this.errorMessage = 'Categoria nu există!';
+        } else {
+          this.errorMessage = 'A apărut o eroare. Încearcă din nou.';
+        }
       }
     });
   }

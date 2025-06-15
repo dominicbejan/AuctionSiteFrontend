@@ -1,23 +1,44 @@
-import { Component } from '@angular/core';
-import { RouterModule } from '@angular/router';
-import { FormsModule } from '@angular/forms';
-import { Router } from '@angular/router';
+import { Component, OnInit } from '@angular/core';
+import { RouterModule, Router } from '@angular/router';
+import { AuthService } from './services/auth.service';
+import { CommonModule } from '@angular/common';
+import { Observable } from 'rxjs';
+import {FormsModule} from '@angular/forms';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterModule, FormsModule],
+  imports: [RouterModule, FormsModule, CommonModule],
   templateUrl: './app.html',
   styleUrls: ['./app.css']
 })
 export class AppComponent {
-  searchTerm = '';
+  isLoggedIn: Observable<boolean>;
+  isAdmin: boolean = false;
+  searchTerm: string = '';
 
-  constructor(private router: Router) {}
+  constructor(private authService: AuthService, private router: Router) {
+    this.isLoggedIn = this.authService.isLoggedIn$;
+    this.checkAdmin(); // 👈 apelăm metoda
+  }
 
-  search() {
-    if (this.searchTerm.trim()) {
-      this.router.navigate(['/search'], { queryParams: { q: this.searchTerm } });
-    }
+  ngOnInit(): void {
+    this.checkAdmin();
+  }
+
+  checkAdmin() {
+    const role = localStorage.getItem('role');
+    this.isAdmin = role === 'admin';
+  }
+
+  logout(): void {
+    this.authService.logout();
+    this.isAdmin = false;
+    this.router.navigate(['/']);
+  }
+
+  search(): void {
+    console.log('Search triggered for:', this.searchTerm);
   }
 }
+
