@@ -18,9 +18,11 @@ export class UserService {
     return this.http.get(`${this.apiUrl}/${username}`);
   }
 
-  updateUser(userData: any, accountName: string): Observable<any> {
-    return this.http.put(`http://localhost:9090/users/${accountName}`, userData, {
-      responseType: 'text' as 'json'  // 🔥 IMPORTANT pentru a evita eroarea dacă răspunsul este gol
-    });
+  updateUser(accountName: string, userData: any) {
+    return this.http.put(`http://localhost:9090/users/${accountName}`, userData, { responseType: 'text' });
+  }
+
+  getUserByUsername(username: string): Observable<any> {
+    return this.http.get<any>(`http://localhost:9090/users/${username}`);
   }
 }

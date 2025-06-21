@@ -1,0 +1,37 @@
+<div class="form-container">
+  <h2 class="title">Actualizează licitația "{{ auctionName }}"</h2>
+
+  <form [formGroup]="auctionForm" (ngSubmit)="onSubmit()">
+    <label for="name">Nume licitație:</label>
+    <input id="name" formControlName="name" />
+
+    <label for="description">Descriere:</label>
+    <textarea id="description" formControlName="description"></textarea>
+
+    <label for="promoted">Promovată:</label>
+    <select id="promoted" formControlName="promoted">
+      <option [value]="true">Yes</option>
+      <option [value]="false">No</option>
+    </select>
+
+    <label for="startPrice">Preț licitație inițial:</label>
+    <input id="startPrice" type="number" formControlName="bitNowPrice" />
+
+    <label for="bitNowPrice">Preț „cumpără acum”:</label>
+    <input id="bitNowPrice" type="number" formControlName="buyNowPrice" />
+
+    <label for="startBiddingDate">Data începerii:</label>
+    <input id="startBiddingDate" type="date" formControlName="startBiddingDate" />
+
+    <label for="endBiddingDate">Data încheierii:</label>
+    <input id="endBiddingDate" type="date" formControlName="endBiddingDate" />
+
+    <label for="numbersOfViews">Număr de vizualizări:</label>
+    <input id="numbersOfViews" type="number" formControlName="numbersOfViews" />
+
+    <label for="categoryName">Categorie:</label>
+    <input id="categoryName" formControlName="categoryName" />
+
+    <button type="submit" class="submit-button">Actualizează</button>
+  </form>
+</div>

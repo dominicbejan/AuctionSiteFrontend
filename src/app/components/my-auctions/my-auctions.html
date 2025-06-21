@@ -5,9 +5,23 @@
     Nu ai încă nicio licitație.
   </div>
 
+
   <div *ngFor="let auction of auctions" class="auction-card">
-    <h3>{{ auction.name }}</h3>
-    <p>{{ auction.description }}</p>
-    <strong>Preț: {{ auction.bitNowPrice }} RON</strong>
+    <p><strong></strong> <span class="title">{{ auction.name }}</span></p>
+    <p><strong>Descriere:</strong> {{ auction.description }}</p>
+    <p><strong>Promovată:</strong> {{ auction.promoted }}</p>
+    <p><strong>Start Bidding Date:</strong> {{ auction.startBiddingDate | date: 'shortDate' }}</p>
+    <p><strong>End Bidding Date:</strong> {{ auction.endBiddingDate | date: 'shortDate' }}</p>
+    <p><strong>Preț licitație inițial:</strong> {{ auction.bitNowPrice }} RON</p>
+    <p><strong>Preț cumparare:</strong> {{ auction.buyNowPrice }} RON</p>
+    <p><strong>Număr de vizualizări:</strong> {{ auction.numbersOfViews }}</p>
+
+    <div class="action-buttons">
+      <button (click)="onUpdateAuction(auction)">Update</button>
+      <button (click)="onDeleteAuction(auction)" class="btn btn-danger">Delete</button>
+    </div>
+
   </div>
+
+
 </div>

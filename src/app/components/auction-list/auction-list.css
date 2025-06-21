@@ -67,3 +67,61 @@
 .animate .underline {
   transform: translateX(-50%) scaleX(1);
 }
+
+.auction-card .title {
+  color: #007bff;
+  font-weight: bold;
+}
+.auction-card p {
+  margin: 8px 0;
+}
+.auction-card strong {
+  font-weight: bold;
+  color: #000;
+}
+
+.bid-container {
+  display: flex;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.form-input {
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 1rem;
+  flex: 1;
+}
+
+.form-button {
+  padding: 10px 20px;
+  background-color: #007bff;
+  border: none;
+  border-radius: 6px;
+  color: white;
+  font-weight: bold;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.form-button:hover {
+  background-color: #0056b3;
+}
+
+.primary-button {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  padding: 10px 16px;
+  border-radius: 6px;
+  font-size: 1rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.primary-button:hover {
+  background-color: #0056b3;
+}

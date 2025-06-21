@@ -18,8 +18,14 @@
 
       <!-- ✅ butonul pentru admin -->
       <a *ngIf="isAdmin" routerLink="/create-category" class="auth-link">Create Category</a>
-
+      <a routerLink="/update-profile" class="auth-link">Update Profile</a>
       <a (click)="logout()" class="auth-link" style="cursor: pointer">Sign out</a>
+      <button
+        *ngIf="isAdmin && isCategoryPage"
+        (click)="deleteCategory()"
+        style="position: fixed; top: 10px; right: 120px; background-color: red; color: white; padding: 8px; border: none; border-radius: 5px; cursor: pointer;">
+        Delete Category
+      </button>
     </div>
 
     <div class="left-buttons" *ngIf="isLoggedIn | async">

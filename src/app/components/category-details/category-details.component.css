@@ -1,0 +1,18 @@
+.details-container {
+  position: relative;
+  z-index: 1;
+}
+
+.delete-btn {
+  margin-top: 20px;
+  padding: 10px 20px;
+  background-color: #3263df;
+  color: #54dc35;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  z-index: 9999;
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+}

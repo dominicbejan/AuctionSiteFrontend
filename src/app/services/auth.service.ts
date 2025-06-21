@@ -56,4 +56,8 @@ export class AuthService {
   getCurrentUser(): string | null {
     return this.currentUser;
   }
+
+  getUserByUsername(username: string): Observable<any> {
+    return this.http.get<any>(`${this.baseUrl}/users/${username}`);
+  }
 }

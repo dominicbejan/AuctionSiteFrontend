@@ -13,8 +13,16 @@ import { CategoryService } from '../../services/category.service';
 export class CategoryListComponent implements OnInit {
   categories: any[] = [];
   animate: boolean = false;
+  isAdmin: boolean = false;
 
-  constructor(private router: Router, private categoryService: CategoryService) {}
+  constructor(
+    private router: Router,
+    private categoryService: CategoryService
+  ) {
+    const userStr = localStorage.getItem("user");
+    const user = userStr ? JSON.parse(userStr) : null;
+    this.isAdmin = user?.roles?.includes("ADMIN");
+  }
 
   ngOnInit(): void {
     setTimeout(() => this.animate = true, 50);

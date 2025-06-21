@@ -17,4 +17,8 @@ export class CategoryService {
   createCategory(category: { name: string; description: string }): Observable<any> {
     return this.http.post(`${this.apiUrl}`, category);
   }
+
+  deleteCategory(name: string): Observable<any> {
+    return this.http.delete(`${this.apiUrl}/${name}`, { responseType: 'text' });
+  }
 }

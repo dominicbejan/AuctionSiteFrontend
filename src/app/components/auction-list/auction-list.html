@@ -11,8 +11,25 @@
 <button (click)="goBack()" class="back-button">← Categorii</button>
 
 <div *ngFor="let auction of auctions" class="auction-card">
-  <h3>{{ auction.name }}</h3>
-  <p>{{ auction.description }}</p>
-  <p><strong>Preț de pornire:</strong> {{ auction.bitNowPrice }} RON</p>
+  <p><strong></strong> <span class="title">{{ auction.name }}</span></p>
+  <p><strong>Descriere:</strong> {{ auction.description }}</p>
+  <p><strong>Promovată:</strong> {{ auction.promoted }}</p>
+  <p><strong>Start Bidding Date:</strong> {{ auction.startBiddingDate | date: 'shortDate' }}</p>
+  <p><strong>End Bidding Date:</strong> {{ auction.endBiddingDate | date: 'shortDate' }}</p>
+  <p><strong>Preț licitație inițial:</strong> {{ auction.bitNowPrice }} RON</p>
+  <div class="bid-container">
+    <input type="number" [(ngModel)]="auction.userBid" placeholder="Introdu suma" class="form-input" />
+    <button (click)="bidNow(auction)" class="form-button">Bid Now</button>
+  </div>
+
+  <p></p>
+  <div *ngIf="auction.bitNowPrice">
+    <button class="primary-button" (click)="buyNow(auction)">
+      Buy Now: {{ auction.bitNowPrice }} RON
+    </button>
+  </div>
+  <p><strong>Număr de vizualizări:</strong> {{ auction.numbersOfViews }}</p>
+
+
 </div>
 
