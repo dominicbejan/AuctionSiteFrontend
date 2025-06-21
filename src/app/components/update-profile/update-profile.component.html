@@ -1,0 +1,18 @@
+<div class="form-container">
+  <h2>Update Profile</h2>
+  <form [formGroup]="profileForm" (ngSubmit)="updateProfile()">
+    <input type="text" placeholder="Account Name" formControlName="accountName" required />
+    <input type="email" placeholder="Email" formControlName="email" required />
+    <input type="password" placeholder="Password" formControlName="password" required />
+    <input type="text" placeholder="Province" formControlName="province" required />
+    <input type="text" placeholder="City" formControlName="city" required />
+    <input type="text" placeholder="Address" formControlName="address" required />
+
+    <select formControlName="type" required>
+      <option value="NORMAL">Normal</option>
+      <option value="PREMIUM">Premium</option>
+    </select>
+
+    <button type="submit" class="btn-submit">Update</button>
+  </form>
+</div>
