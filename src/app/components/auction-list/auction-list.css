@@ -125,3 +125,72 @@
 .primary-button:hover {
   background-color: #0056b3;
 }
+
+.auction-layout {
+  display: flex;
+  justify-content: space-between;
+  gap: 20px;
+}
+
+.category-auctions {
+  flex: 2;
+}
+
+.active-auctions {
+  flex: 1;
+  background-color: #fafafa;
+  padding: 15px;
+  border-left: 2px solid #eee;
+}
+
+.active-card {
+  background-color: white;
+  padding: 10px;
+  margin-bottom: 10px;
+  border-radius: 6px;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.05);
+}
+
+.auction-layout-3-cols {
+  display: flex;
+  gap: 20px;
+  justify-content: space-between;
+}
+
+.completed-auctions,
+.category-auctions,
+.active-auctions {
+  flex: 1;
+  max-width: 32%;
+}
+
+.completed-card,
+.auction-card,
+.active-card {
+  background-color: #fff;
+  border: 1px solid #ccc;
+  padding: 14px;
+  margin-bottom: 16px;
+  border-radius: 8px;
+}
+
+.auction-layout {
+  display: flex;
+  justify-content: space-between;
+  gap: 20px;
+}
+
+.completed-auctions,
+.category-auctions,
+.active-auctions {
+  flex: 1;
+}
+
+.completed-card {
+  background: #f0f0f0;
+  border: 1px solid #ccc;
+  margin-bottom: 15px;
+  padding: 10px;
+  border-radius: 8px;
+}
+

@@ -7,29 +7,58 @@
   </div>
 </div>
 
-
 <button (click)="goBack()" class="back-button">← Categorii</button>
 
-<div *ngFor="let auction of auctions" class="auction-card">
-  <p><strong></strong> <span class="title">{{ auction.name }}</span></p>
-  <p><strong>Descriere:</strong> {{ auction.description }}</p>
-  <p><strong>Promovată:</strong> {{ auction.promoted }}</p>
-  <p><strong>Start Bidding Date:</strong> {{ auction.startBiddingDate | date: 'shortDate' }}</p>
-  <p><strong>End Bidding Date:</strong> {{ auction.endBiddingDate | date: 'shortDate' }}</p>
-  <p><strong>Preț licitație inițial:</strong> {{ auction.bitNowPrice }} RON</p>
-  <div class="bid-container">
-    <input type="number" [(ngModel)]="auction.userBid" placeholder="Introdu suma" class="form-input" />
-    <button (click)="bidNow(auction)" class="form-button">Bid Now</button>
+<div class="auction-layout-3-cols">
+
+  <!-- 🔴 COLONNA 1: Auctions Completed -->
+  <div class="completed-auctions">
+    <h3>Auctions Completed</h3>
+    <div *ngFor="let auction of completedAuctions" class="completed-card">
+      <p><strong>{{ auction.name }}</strong></p>
+      <p><strong>Descriere:</strong> {{ auction.description }}</p>
+      <p><strong>Promovată:</strong> {{ auction.promoted }}</p>
+      <p><strong>Start:</strong> {{ auction.startBiddingDate | date: 'shortDate' }}</p>
+      <p><strong>End:</strong> {{ auction.endBiddingDate | date: 'shortDate' }}</p>
+      <p><strong>Bought with price:</strong> {{ auction.boughtPrice }} EUR</p>
+      <p><strong>Buyer:</strong> {{ auction.buyer }}</p>
+    </div>
   </div>
 
-  <p></p>
-  <div *ngIf="auction.bitNowPrice">
-    <button class="primary-button" (click)="buyNow(auction)">
-      Buy Now: {{ auction.bitNowPrice }} RON
-    </button>
+  <!-- 🟡 COLONNA 2: Toate licitațiile -->
+  <div class="category-auctions">
+    <h3>Toate Licitațiile</h3>
+    <div *ngFor="let auction of auctions" class="auction-card">
+      <p><strong>{{ auction.name }}</strong></p>
+      <p><strong>Descriere:</strong> {{ auction.description }}</p>
+      <p><strong>Promovată:</strong> {{ auction.promoted }}</p>
+      <p><strong>Start:</strong> {{ auction.startBiddingDate | date: 'shortDate' }}</p>
+      <p><strong>End:</strong> {{ auction.endBiddingDate | date: 'shortDate' }}</p>
+      <p><strong>Preț licitație inițial:</strong> {{ auction.bitNowPrice }} EUR</p>
+
+      <div *ngIf="auction.buyNowPrice && auction.users?.accountName !== user?.accountName">
+        <button class="primary-button" (click)="buyNow(auction)">
+          Buy Now: {{ auction.buyNowPrice }} EUR
+        </button>
+      </div>
+
+      <p><strong>Număr de vizualizări:</strong> {{ auction.numbersOfViews }}</p>
+    </div>
   </div>
-  <p><strong>Număr de vizualizări:</strong> {{ auction.numbersOfViews }}</p>
 
+  <!-- 🟢 COLONNA 3: Licitații active -->
+  <div class="active-auctions">
+    <h3>Licitații active</h3>
+    <div *ngFor="let auction of activeAuctions" class="active-card">
+      <p><strong>{{ auction.name }}</strong></p>
+      <p><strong>Start:</strong> {{ auction.startBiddingDate | date: 'shortDate' }}</p>
+      <p><strong>End:</strong> {{ auction.endBiddingDate | date: 'shortDate' }}</p>
+      <p><strong>Preț curent:</strong> {{ auction.bitNowPrice }} EUR</p>
 
+      <div class="bid-container">
+        <input type="number" [(ngModel)]="auction.userBid" placeholder="Introdu suma" class="form-input" />
+        <button class="form-button" (click)="bidNow(auction)">Bid Now</button>
+      </div>
+    </div>
+  </div>
 </div>
-

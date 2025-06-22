@@ -3,6 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { AuctionService } from '../../services/auction.service';
 import { FormsModule } from '@angular/forms'; // ✅ Adaugă asta
+import { HttpClient } from '@angular/common/http';
 
 @Component({
   standalone: true,
@@ -19,36 +20,74 @@ export class AuctionListComponent implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private router: Router,
-    private auctionService: AuctionService
+    private auctionService: AuctionService,
+    private http: HttpClient // 👈 ADĂUGAT
   ) {}
 
+  activeAuctions: any[] = [];
+  completedAuctions: any[] = [];
+  user: any;
+
   ngOnInit(): void {
+    this.user = JSON.parse(localStorage.getItem('user') || '{}');
     this.categoryName = this.route.snapshot.params['name'].toLowerCase();
 
     this.auctionService.getAuctionsByCategory(this.categoryName).subscribe({
       next: (data) => {
-        console.log('✅ Auctions:', data);
-        this.auctions = data;
+        const now = new Date();
+
+        // ✅ Auctions Completed
+        this.completedAuctions = data.filter((auction: any) => auction.isCompleted === true);
+
+        // ✅ Toate licitațiile care nu sunt finalizate
+        this.auctions = data.filter((auction: any) => !auction.isCompleted);
+
+        // ✅ Dintre cele nefinalizate, selectăm doar pe cele active
+        this.activeAuctions = this.auctions.filter((auction: any) => {
+          const start = new Date(auction.startBiddingDate);
+          const end = new Date(auction.endBiddingDate);
+          return now >= start && now <= end;
+        });
       },
-      error: (err) => {
-        console.error('❌ Eroare:', err);
-      }
+      error: (err) => console.error('Eroare:', err)
     });
   }
 
-  buyNow(auction: any): void {
-    const userStr = localStorage.getItem("user");
-    const user = userStr ? JSON.parse(userStr) : null;
-    if (!user?.username) {
-      alert("Trebuie să fii logat pentru a cumpăra.");
+  buyNow(auction: any) {
+    console.log("Auction pentru buyNow:", auction);
+    const user = JSON.parse(localStorage.getItem('user') || '{}');
+    if (!user || !user.accountName) {
+      alert('Trebuie să fii logat pentru a cumpăra!');
       return;
     }
 
-    const buyData = { userName: user.username };
+    const request = {
+      userName: user.accountName,
+      bidding: {
+        currentPrice: auction.bitNowPrice
+      }
+    };
 
-    this.auctionService.buyNow(auction.id, buyData).subscribe({
-      next: () => alert(`Ai cumpărat ${auction.name} pentru ${auction.bitNowPrice} RON.`),
-      error: () => alert("Eroare la cumpărare.")
+    this.http.post(`http://localhost:9090/currentBids/buy/${auction.auction_id}`, request).subscribe({
+      next: (bidding: any) => {
+        alert('Cumpărat cu succes!');
+
+        // Eliminăm din celelalte liste
+        this.auctions = this.auctions.filter(a => a.auction_id !== auction.auction_id);
+        this.activeAuctions = this.activeAuctions.filter(a => a.auction_id !== auction.auction_id);
+
+        // Adăugăm în lista completată
+        this.completedAuctions.push({
+          ...auction,
+          boughtPrice: bidding.currentPrice,
+          endBiddingDate: bidding.endDate,
+          buyer: bidding.user?.accountName || request.userName // fallback dacă nu primește userul complet
+        });
+      },
+      error: (err: any) => {
+        console.error('Eroare la cumpărare:', err);
+        alert('Eroare la cumpărare!');
+      }
     });
   }
 
@@ -58,21 +97,26 @@ export class AuctionListComponent implements OnInit {
       return;
     }
 
-    const userStr = localStorage.getItem("user");
-    const user = userStr ? JSON.parse(userStr) : null;
-    if (!user?.username) {
-      alert("Trebuie să fii logat pentru a licita.");
+    const user = JSON.parse(localStorage.getItem('user') || '{}');
+    if (!user || !user.accountName) {
+      alert('Trebuie să fii logat pentru a licita!');
       return;
     }
 
     const biddingData = {
-      bidding: { price: auction.userBid },
-      userName: user.username
+      bidding: { currentPrice: auction.userBid }, // ✅ asigură-te că e `currentPrice`
+      userName: user.accountName
     };
 
-    this.auctionService.placeBid(auction.id, biddingData).subscribe({
-      next: () => alert(`Ai licitat ${auction.userBid} RON pentru ${auction.name}`),
-      error: () => alert("Eroare la plasarea licitației.")
+    this.http.post(`http://localhost:9090/currentBids/${auction.auction_id}`, biddingData).subscribe({
+      next: () => {
+        alert(`Ai licitat ${auction.userBid} EUR pentru ${auction.name}`);
+        auction.bitNowPrice = auction.userBid; // actualizează local dacă vrei
+      },
+      error: (err: any) => {
+        alert("Eroare la plasarea licitației.");
+        console.error(err);
+      }
     });
   }
 

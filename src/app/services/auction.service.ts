@@ -45,4 +45,8 @@ export class AuctionService {
   getAuctionById(id: number) {
     return this.http.get<any>(`http://localhost:9090/auctions/id/${id}`);
   }
+
+  getActiveAuctions(): Observable<any[]> {
+    return this.http.get<any[]>(`${this.apiUrl}/active`);
+  }
 }
