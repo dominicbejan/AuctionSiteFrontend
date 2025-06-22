@@ -36,13 +36,22 @@ export class AuctionListComponent implements OnInit {
       next: (data) => {
         const now = new Date();
 
-        // ✅ Auctions Completed
-        this.completedAuctions = data.filter((auction: any) => auction.isCompleted === true);
+        this.completedAuctions = data.filter((auction: any) => {
+          const endDate = new Date(auction.endBiddingDate);
+          return (
+            auction.isCompleted === true ||
+            (endDate < now && auction.biddings && auction.biddings.length > 0)
+          );
+        });
 
-        // ✅ Toate licitațiile care nu sunt finalizate
-        this.auctions = data.filter((auction: any) => !auction.isCompleted);
+        this.auctions = data.filter((auction: any) => {
+          const endDate = new Date(auction.endBiddingDate);
+          return (
+            !auction.isCompleted &&
+            (endDate >= now || !auction.biddings || auction.biddings.length === 0)
+          );
+        });
 
-        // ✅ Dintre cele nefinalizate, selectăm doar pe cele active
         this.activeAuctions = this.auctions.filter((auction: any) => {
           const start = new Date(auction.startBiddingDate);
           const end = new Date(auction.endBiddingDate);
@@ -103,15 +112,21 @@ export class AuctionListComponent implements OnInit {
       return;
     }
 
+    // 🛑 Verifică dacă userul e creatorul licitației
+    if (auction.users?.accountName === user.accountName) {
+      alert("Nu poți licita la propria ta licitație!");
+      return;
+    }
+
     const biddingData = {
-      bidding: { currentPrice: auction.userBid }, // ✅ asigură-te că e `currentPrice`
+      bidding: { currentPrice: auction.userBid },
       userName: user.accountName
     };
 
     this.http.post(`http://localhost:9090/currentBids/${auction.auction_id}`, biddingData).subscribe({
       next: () => {
         alert(`Ai licitat ${auction.userBid} EUR pentru ${auction.name}`);
-        auction.bitNowPrice = auction.userBid; // actualizează local dacă vrei
+        auction.bitNowPrice = auction.userBid;
       },
       error: (err: any) => {
         alert("Eroare la plasarea licitației.");

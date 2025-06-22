@@ -14,14 +14,15 @@
   <!-- 🔴 COLONNA 1: Auctions Completed -->
   <div class="completed-auctions">
     <h3>Auctions Completed</h3>
+
     <div *ngFor="let auction of completedAuctions" class="completed-card">
       <p><strong>{{ auction.name }}</strong></p>
       <p><strong>Descriere:</strong> {{ auction.description }}</p>
       <p><strong>Promovată:</strong> {{ auction.promoted }}</p>
       <p><strong>Start:</strong> {{ auction.startBiddingDate | date: 'shortDate' }}</p>
       <p><strong>End:</strong> {{ auction.endBiddingDate | date: 'shortDate' }}</p>
-      <p><strong>Bought with price:</strong> {{ auction.boughtPrice }} EUR</p>
-      <p><strong>Buyer:</strong> {{ auction.buyer }}</p>
+      <p><strong>Bought with price:</strong> {{ auction.boughtPrice || auction.buyNowPrice || auction.bitNowPrice }} EUR</p>
+      <p *ngIf="auction.buyer"><strong>Buyer:</strong> {{ auction.buyer }}</p>
     </div>
   </div>
 
@@ -55,7 +56,7 @@
       <p><strong>End:</strong> {{ auction.endBiddingDate | date: 'shortDate' }}</p>
       <p><strong>Preț curent:</strong> {{ auction.bitNowPrice }} EUR</p>
 
-      <div class="bid-container">
+      <div *ngIf="auction.users?.accountName !== user?.accountName" class="bid-container">
         <input type="number" [(ngModel)]="auction.userBid" placeholder="Introdu suma" class="form-input" />
         <button class="form-button" (click)="bidNow(auction)">Bid Now</button>
       </div>
