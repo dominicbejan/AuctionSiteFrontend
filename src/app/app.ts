@@ -25,8 +25,9 @@ export class AppComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.checkAdmin();
-
+    this.authService.currentUser$.subscribe(user => {
+      this.checkAdmin(); // reapelăm de fiecare dată când userul se schimbă
+    });
     this.router.events.subscribe(event => {
       if (event instanceof NavigationEnd) {
         const url = event.urlAfterRedirects;

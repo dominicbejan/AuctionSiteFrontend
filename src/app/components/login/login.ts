@@ -20,6 +20,7 @@ export class LoginComponent {
   login(): void {
     console.log("Trimitem:", this.username, this.password);
 
+
     this.authService.login(this.username, this.password).subscribe({
       next: (res) => {
         console.log("✅ Login OK:", res);
@@ -29,6 +30,7 @@ export class LoginComponent {
             console.log("📥 Date utilizator:", userData);
             localStorage.setItem('user', JSON.stringify(userData));
             localStorage.setItem('accountName', userData.accountName); // ← AICI!
+            this.authService.setCurrentUser(userData);
             alert('Login reușit!');
             this.router.navigate(['/']);
           },

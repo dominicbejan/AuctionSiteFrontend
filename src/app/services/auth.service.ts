@@ -13,6 +13,13 @@ export class AuthService {
 
   private currentUser: string | null = null;
 
+  private currentUserSubject = new BehaviorSubject<any>(null);
+  public currentUser$ = this.currentUserSubject.asObservable();
+
+  setCurrentUser(user: any): void {
+    this.currentUserSubject.next(user);
+  }
+
   constructor(private http: HttpClient) {}
 
   login(accountName: string, password: string): Observable<any> {
